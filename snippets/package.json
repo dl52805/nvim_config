@@ -1,0 +1,9 @@
+{
+    "name": "personal-snippets",
+    "contributes": {
+        "snippets": [
+            { "language": "dart", "path": "./dart.json" },
+			{ "language": "dart", "path": "./riverpod.json" }
+        ]
+    }
+}
