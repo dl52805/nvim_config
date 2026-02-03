@@ -2,8 +2,8 @@ if vim.g.neovide then
     if vim.loop.os_uname().sysname == "Darwin" then
         -- vim.o.guifont = "0xProto Nerd Font:h14.5:w0.1"
         -- vim.opt.linespace = 15
-        vim.o.guifont = "MonoLisa Nerd Font:h14.5:w0.0"
-        vim.opt.linespace = 8
+        vim.o.guifont = "MonoLisaLean Nerd Font:h13:w0.0"
+        vim.opt.linespace = 5
     else
         vim.opt.linespace = 8
     end
@@ -29,9 +29,18 @@ function select_font(font_name)
         if font_name == "monolisa" then
             vim.o.guifont = "MonoLisa Nerd Font:h14.5:w0.0"
             vim.opt.linespace = 8
+        elseif font_name == "monolisamile" then
+            vim.o.guifont = "MonoLisaMile Nerd Font:h14.5:w0.0"
+            vim.opt.linespace = 8
         elseif font_name == "monolisa_large" then
             vim.o.guifont = "MonoLisa Nerd Font:h16.2:w0.1"
             vim.opt.linespace = 9
+        elseif font_name == "monolisalean" then
+            vim.o.guifont = "MonoLisaLean Nerd Font:h14.5:w0.0"
+            vim.opt.linespace = 8
+        elseif font_name == "monolisalean_mini" then
+            vim.o.guifont = "MonoLisaLean Nerd Font:h13:w0.0"
+            vim.opt.linespace = 5
         elseif font_name == "geist" then
             vim.o.guifont = "GeistMono Nerd Font:h15:w0.6"
             vim.opt.linespace = 12

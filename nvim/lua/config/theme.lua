@@ -53,8 +53,16 @@ vim.api.nvim_create_autocmd('ColorScheme', {
             vim.api.nvim_set_hl(0, 'BufferLineIndicatorSelected', { bg='#222437' })
         end
 
+        if (vim.g.colors_name == 'tokyonight-storm') then
+            vim.api.nvim_set_hl(0, 'BufferLineIndicatorSelected', { bg='#24283c' })
+        end
+
         if (vim.g.colors_name == 'hybrid') then
             vim.api.nvim_set_hl(0, 'BufferLineIndicatorSelected', { bg='#1d1f21' })
+        end
+
+        if (vim.g.colors_name == 'everforest') then
+            vim.api.nvim_set_hl(0, 'BufferLineIndicatorSelected', { bg='#272e33' })
         end
     end
 })

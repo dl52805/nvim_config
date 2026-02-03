@@ -1,6 +1,10 @@
 return {
-    "nvim-treesitter/nvim-treesitter",
-    "nvim-treesitter/playground",
+    {
+        "nvim-treesitter/nvim-treesitter",
+        lazy = false,
+        build = ':TSUpdate',
+    },
+    -- "nvim-treesitter/playground",
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope.nvim",
     "preservim/nerdtree",
@@ -454,9 +458,11 @@ return {
             vim.keymap.set("n", ",d", ":SymbolsClose<CR>")
         end
     },
+    --[[
     {
         "sidebar-nvim/sidebar.nvim"
     },
+    --]]
     {
         "catppuccin/nvim",
         name = "catppuccin",
@@ -738,13 +744,16 @@ return {
     {
         "rktjmp/lush.nvim",
     },
-    --[[
     {
-        dir = "~/nvim_configs/themes/campfire",
+        dir = "~/nvim_configs/themes/specular",
         lazy = false,
         enabled = function() return jit.os == "OSX" end
     },
-    --]]
+    {
+        dir = "~\\nvim_themes\\specular",
+        lazy = false,
+        enabled = function() return jit.os == "Windows" end
+    },
     {
         "bassamsdata/namu.nvim",
         config = function()
@@ -810,6 +819,7 @@ return {
             require("dooing").setup({})
         end,
     },
+    --[==[
     {
         "synaptiko/xit.nvim",
         run = function(plugin)
@@ -821,6 +831,7 @@ return {
         end,
         dependencies = { 'nvim-treesitter/nvim-treesitter' }
     },
+    --]==]
     {
         "xzbdmw/clasp.nvim",
         config = function()

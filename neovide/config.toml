@@ -1,0 +1,8 @@
+frame = "buttonless"
+title-hidden = true
+
+[box-drawing]
+mode = "native"
+
+[box-drawing.sizes]
+default = [3, 5]

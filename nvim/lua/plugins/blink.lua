@@ -125,7 +125,8 @@ return {
                 use_nvim_cmp_as_default = false,
             },
             cmdline = {
-                enabled = true,
+                -- enabled = true,
+                enabled = false,
                 keymap = { preset = 'cmdline' },
                 sources = function()
                     local type = vim.fn.getcmdtype()
