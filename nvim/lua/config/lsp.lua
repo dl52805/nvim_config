@@ -128,7 +128,28 @@ vim.lsp.config('clangd', {
 vim.lsp.enable('clangd')
 
 vim.lsp.enable('glsl_analyzer')
-vim.lsp.enable('basedpyright')
+
+vim.lsp.config('ty', {
+    settings = {
+        ty = {}
+    }
+})
+vim.lsp.enable('ty')
+
+-- vim.lsp.enable('basedpyright')
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if not client then
+            return
+        end
+
+        if client.name == "basedpyright" then
+            vim.diagnostic.enable(false, { bufnr = args.buf })
+        end
+    end,
+})
+
 vim.lsp.enable('ols')
 vim.lsp.enable('zls')
 vim.lsp.enable('nim_langserver')

@@ -1,6 +1,9 @@
 frame = "buttonless"
 title-hidden = true
 
+fork = true
+neovim-bin = "/Users/danluo/Executables/nvim/v0.11.4/bin/nvim-0.11.4"
+
 [box-drawing]
 mode = "native"
 

@@ -52,11 +52,11 @@ return {
     {
         "sam4llis/nvim-tundra",
     },
-    --[[
     {
         "Shatur/neovim-ayu",
         priority = 1000,
     },
+    --[[
     {
         "oxfist/night-owl.nvim",
         lazy = false,
