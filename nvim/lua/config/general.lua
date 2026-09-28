@@ -24,3 +24,14 @@ vim.opt.fillchars = { eob = " " }
 vim.cmd[[
 	let g:c_syntax_for_h = 1
 ]]
+
+local function refresh()
+  if vim.bo.buftype == "terminal" then
+    vim.cmd("enew | bd! # | term")
+  end
+end
+
+vim.keymap.set('n', '<space>rr', function()
+	refresh()
+end, { desc = "refresh terminal" })
+

@@ -1,4 +1,4 @@
-vim.cmd([[ 
+vim.cmd([[
 
 let target_path = expand('~/.undodir')
 
@@ -10,4 +10,3 @@ let &undodir=target_path
 set undofile
 
 ]])
-

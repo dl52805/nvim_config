@@ -1,80 +1,9 @@
--- local lspconfig = require("lspconfig")
-
---[=[
-local on_attach_gopls = function(client, bufnr)
-    if client.name == 'gopls' then
-        client.server_capabilities.semanticTokensProvider = {
-            full = true,
-            legend = {
-                tokenTypes = {
-                    'namespace',
-                    'type',
-                    'class',
-                    'enum',
-                    'interface',
-                    'struct',
-                    'typeParameter',
-                    'parameter',
-                    'variable',
-                    'property',
-                    'enumMember',
-                    'event',
-                    'function',
-                    'method',
-                    'macro',
-                    'keyword',
-                    'modifier',
-                    'comment',
-                    'string',
-                    'number',
-                    'regexp',
-                    'operator',
-                    'decorator'
-                },
-                tokenModifiers = {
-                    'declaration',
-                    'definition',
-                    'readonly',
-                    'static',
-                    'deprecated',
-                    'abstract',
-                    'async',
-                    'modification',
-                    'documentation',
-                    'defaultLibrary'
-                }
-            }
-        }
-    end
-end
---]=]
-
-
---[[
-lspconfig.jdtls.setup({
-    handlers = {
-        ['textDocument/publishDiagnostics'] = function(...) end
-    },
-})
---]]
-
---[[
-lspconfig.gopls.setup({
-    -- on_attach = on_attach_gopls,
-    settings = {
-        gopls = {
-            semanticTokens = true,
-        }
-    }
-})
---]]
-
 vim.lsp.config('gopls', {
-    settings = {
-        gopls = {
-            semanticTokens = true,
-        }
+  settings = {
+    gopls = {
+      semanticTokens = true,
     }
+  }
 })
 
 vim.lsp.enable('gopls')
@@ -84,29 +13,29 @@ vim.lsp.enable('gopls')
 -- to know how to create new highlight patterns for semantic tokens
 --[[
 vim.api.nvim_create_autocmd("LspTokenUpdate", {
-    callback = function(args)
-        local token = args.data.token
+  callback = function(args)
+    local token = args.data.token
 
-        if token.type == "variable" then
-            vim.lsp.semantic_tokens.highlight_token(
-               token,
-               args.buf,
-               args.data.client_id,
-               "@variable",
-               { priority = 95 }
-            )
-        end
-    end,
+    if token.type == "variable" then
+      vim.lsp.semantic_tokens.highlight_token(
+        token,
+        args.buf,
+        args.data.client_id,
+        "@variable",
+        { priority = 95 }
+      )
+    end
+  end,
 })
 --]]
 
 --[[
 lspconfig.tinymist.setup({
-    single_file_support = true,
-    root_dir = function()
-        return vim.fn.getcwd()
-    end,
-    settings = {},
+  single_file_support = true,
+  root_dir = function()
+    return vim.fn.getcwd()
+  end,
+  settings = {},
 })
 --]]
 
@@ -114,15 +43,15 @@ vim.lsp.enable('tinymist')
 
 --[[
 lspconfig.clangd.setup({
-    cmd = {
-        "clangd",
-        "-header-insertion=never",
-    },
+  cmd = {
+    "clangd",
+    "-header-insertion=never",
+  },
 })
 --]]
 
 vim.lsp.config('clangd', {
-    cmd = { "clangd", "-header-insertion=never" },
+  cmd = { "clangd", "-header-insertion=never" },
 })
 
 vim.lsp.enable('clangd')
@@ -130,24 +59,24 @@ vim.lsp.enable('clangd')
 vim.lsp.enable('glsl_analyzer')
 
 vim.lsp.config('ty', {
-    settings = {
-        ty = {}
-    }
+  settings = {
+    ty = {}
+  }
 })
 vim.lsp.enable('ty')
 
 -- vim.lsp.enable('basedpyright')
 vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(args)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if not client then
-            return
-        end
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if not client then
+      return
+    end
 
-        if client.name == "basedpyright" then
-            vim.diagnostic.enable(false, { bufnr = args.buf })
-        end
-    end,
+    if client.name == "basedpyright" then
+      vim.diagnostic.enable(false, { bufnr = args.buf })
+    end
+  end,
 })
 
 vim.lsp.enable('ols')
@@ -162,260 +91,252 @@ vim.lsp.enable('ts_ls')
 vim.lsp.enable('svelte')
 vim.lsp.enable('vtsls')
 
---[[
-lspconfig.glsl_analyzer.setup({})
-lspconfig.basedpyright.setup({})
-lspconfig.ols.setup({})
--- rustaceanvim should automatically configure rust analyzer for us
--- lspconfig.rust_analyzer.setup({})
-lspconfig.zls.setup({})
-lspconfig.nim_langserver.setup({})
-lspconfig.csharp_ls.setup({})
-
-lspconfig.biome.setup({})
-lspconfig.emmet_ls.setup({})
-lspconfig.svelte.setup({})
-lspconfig.ts_ls.setup({})
---]]
-
--- lspconfig.serve_d.setup({})
-
 vim.o.pumheight = 15
 
 vim.cmd[[ set scl=yes ]]
 
+local diagnostics_on = true
+vim.keymap.set('n', '<leader>tld', function()
+  diagnostics_on = not diagnostics_on
+  if diagnostics_on then
+    vim.diagnostic.enable(true)
+  else
+    vim.diagnostic.enable(false)
+  end
+end)
+
 vim.api.nvim_create_autocmd('ColorScheme', {
-    callback = function ()
-        -- Tokyo Night Colors
-        -- #f7768e
-        -- #ff9e64
-        -- #e0af68
-        -- #cfc9c2
-        -- #9ece6a
-        -- #73daca
-        -- #b4f9f8
-        -- #2ac3de
-        -- #7aa2f7
-        -- #bb9af7
-        -- #c0caf5
-        -- #7dcfff
+  callback = function ()
+    -- Tokyo Night Colors
+    -- #f7768e
+    -- #ff9e64
+    -- #e0af68
+    -- #cfc9c2
+    -- #9ece6a
+    -- #73daca
+    -- #b4f9f8
+    -- #2ac3de
+    -- #7aa2f7
+    -- #bb9af7
+    -- #c0caf5
+    -- #7dcfff
 
-        -- Neomodern Campfire Colors
-        --[[
-            alt      = "#abbceb",
-            bg       = "#1b1a20",
-            border   = "#393842",
-            builtin  = "#8da0d6",
-            comment  = "#686675",
-            constant = "#e67e80",
-            dim      = "#121112",
-            fg       = "#bbbac1",
-            float    = "#2d2b36",
-            func     = "#53a8b8",
-            keyword  = "#e69875",
-            line     = "#1f1e26",
-            operator = "#9b99a3",
-            preproc  = "#b39581",
-            property = "#8c8abd",
-            string   = "#dbbc8a",
-            type     = "#d6a56f",
-            visual   = "#413f4d",
-            error    = "#e67e80",
-            hint     = "#8da0d6",
-            warning  = "#ad9368",
-            delta    = "#8da0d6",
-            plus     = "#a7c080",
-        --]]
+    -- Neomodern Campfire Colors
+    --[[
+    alt      = "#abbceb",
+    bg       = "#1b1a20",
+    border   = "#393842",
+    builtin  = "#8da0d6",
+    comment  = "#686675",
+    constant = "#e67e80",
+    dim      = "#121112",
+    fg       = "#bbbac1",
+    float    = "#2d2b36",
+    func     = "#53a8b8",
+    keyword  = "#e69875",
+    line     = "#1f1e26",
+    operator = "#9b99a3",
+    preproc  = "#b39581",
+    property = "#8c8abd",
+    string   = "#dbbc8a",
+    type     = "#d6a56f",
+    visual   = "#413f4d",
+    error    = "#e67e80",
+    hint     = "#8da0d6",
+    warning  = "#ad9368",
+    delta    = "#8da0d6",
+    plus     = "#a7c080",
+    --]]
 
-        if (vim.g.colors_name == 'tokyonight-night') then
-            vim.api.nvim_set_hl(0, '@type.builtin.java', { fg = '#7dcfff' })
-            vim.api.nvim_set_hl(0, '@lsp.type.parameter.java', { fg='#d5cdc3' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.java', { fg='#e0af68' })
-            vim.api.nvim_set_hl(0, '@keyword', { fg='#bb9af7' })
+    if (vim.g.colors_name == 'tokyonight-night') then
+      vim.api.nvim_set_hl(0, '@type.builtin.java', { fg = '#7dcfff' })
+      vim.api.nvim_set_hl(0, '@lsp.type.parameter.java', { fg='#d5cdc3' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.java', { fg='#e0af68' })
+      vim.api.nvim_set_hl(0, '@keyword', { fg='#bb9af7' })
 
-            vim.api.nvim_set_hl(0, '@lsp.type.parameter.go', { fg='#d5cdc3' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.definition.go', { fg='#e0af68' })
+      vim.api.nvim_set_hl(0, '@lsp.type.parameter.go', { fg='#d5cdc3' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.definition.go', { fg='#e0af68' })
 
-            -- vim.api.nvim_set_hl(0, 'htmlTagName', { fg='#f7768e' })
-            -- vim.api.nvim_set_hl(0, 'htmlTag', { fg='#a43071' })
-            -- vim.api.nvim_set_hl(0, 'htmlEndTag', { fg='#a43071' })
-            vim.api.nvim_set_hl(0, 'htmlTagName', { fg='#bb9af7' })
-            vim.api.nvim_set_hl(0, 'htmlTag', { fg='#7aa2f7' })
-            vim.api.nvim_set_hl(0, 'htmlEndTag', { fg='#7aa2f7' })
+      -- vim.api.nvim_set_hl(0, 'htmlTagName', { fg='#f7768e' })
+      -- vim.api.nvim_set_hl(0, 'htmlTag', { fg='#a43071' })
+      -- vim.api.nvim_set_hl(0, 'htmlEndTag', { fg='#a43071' })
+      vim.api.nvim_set_hl(0, 'htmlTagName', { fg='#bb9af7' })
+      vim.api.nvim_set_hl(0, 'htmlTag', { fg='#7aa2f7' })
+      vim.api.nvim_set_hl(0, 'htmlEndTag', { fg='#7aa2f7' })
 
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.label.dart', { fg='#7dcfff' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.dart', { fg='#e0af68' })
-            vim.api.nvim_set_hl(0, '@lsp.type.parameter.dart', { fg='#d5cdc3' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.label.dart', { fg='#7dcfff' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.dart', { fg='#e0af68' })
+      vim.api.nvim_set_hl(0, '@lsp.type.parameter.dart', { fg='#d5cdc3' })
 
-            vim.api.nvim_set_hl(0, '@lsp.type.parameter.c', { fg='#d5cdc3' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.c', { fg='#e0af68' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.definition.c', { fg='#e0af68' })
+      vim.api.nvim_set_hl(0, '@lsp.type.parameter.c', { fg='#d5cdc3' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.c', { fg='#e0af68' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.definition.c', { fg='#e0af68' })
 
-            vim.api.nvim_set_hl(0, '@lsp.type.parameter.cpp', { fg='#d5cdc3' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.cpp', { fg='#e0af68' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.definition.cpp', { fg='#e0af68' })
+      vim.api.nvim_set_hl(0, '@lsp.type.parameter.cpp', { fg='#d5cdc3' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.cpp', { fg='#e0af68' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.definition.cpp', { fg='#e0af68' })
 
-            vim.api.nvim_set_hl(0, 'FlutterWidgetGuides', { fg='#4f5c8a' })
-        end
-
-        if (vim.g.colors_name == 'tokyonight-moon') then
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.label.dart', { fg='#97d8ff' })
-        end
-
-        --[[
-        if (vim.g.colors_name == 'material' and vim.g.material_style == 'deep ocean') then
-            vim.api.nvim_set_hl(0, '@lsp.type.parameter.java', { fg='#d5cdc3' })
-
-            vim.api.nvim_set_hl(0, '@keyword.modifier.java', { fg='#bb9af7' })
-            vim.api.nvim_set_hl(0, '@keyword.type.java', { fg='#bb9af7' })
-            vim.api.nvim_set_hl(0, '@keyword.import.java', { fg='#bb9af7' })
-            vim.api.nvim_set_hl(0, '@keyword.return.java', { fg='#bb9af7' })
-
-            vim.api.nvim_set_hl(0, '@type.builtin.java', { fg = '#7dcfff' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.java', { fg='#e0af68' })
-        end
-        --]]
-
-        --[[
-        if (vim.g.colors_name == 'rose-pine') then
-            vim.api.nvim_set_hl(0, '@lsp.type.namespace.go', { fg='#c4a7e7' })
-        end
-        --]]
-
-        --[[
-        if (vim.g.colors_name == 'neomodern') then
-            vim.api.nvim_set_hl(0, '@lsp.type.type.cpp', { fg='#abbceb' })
-            vim.api.nvim_set_hl(0, '@lsp.type.class.cpp', { fg='#a7c080' })
-            vim.api.nvim_set_hl(0, 'ModeMsg', { fg='#a6c080' })
-        end
-        --]]
-
-        if (vim.g.colors_name == 'duskfox') then
-            vim.api.nvim_set_hl(0, '@lsp.type.pol.typst', {})
-            vim.api.nvim_set_hl(0, '@lsp.type.number.typst', { fg='#ea9a97' })
-            vim.api.nvim_set_hl(0, '@constant.typst', { fg='#f6c177' })
-            vim.api.nvim_set_hl(0, '@variable.member.typst', { fg='#eb6f96' })
-            vim.api.nvim_set_hl(0, '@lsp.type.function.typst', { fg='#65b1cd' })
-        end
-
-        if (vim.g.colors_name == 'nordic') then
-            vim.api.nvim_set_hl(0, 'MatchParen', { underline = false, bg = '#465369' })
-        end
-
-        -- vim.api.nvim_set_hl(0, '@lsp.type.parameter', { fg='Purple' })
-        -- vim.api.nvim_set_hl(0, '@lsp.mod.readonly', { italic=true })
-
-        if (vim.g.colors_name == 'campfire') then
-            -- vim.api.nvim_set_hl(0, '@lsp.type.type.cpp', { fg='#abbceb' })
-            -- vim.api.nvim_set_hl(0, '@lsp.type.class.cpp', { fg='#a7c080' })
-            -- vim.api.nvim_set_hl(0, '@lsp.type.type.c', { fg='#abbceb' })
-            -- vim.api.nvim_set_hl(0, '@lsp.type.class.c', { fg='#a7c080' })
-            -- vim.api.nvim_set_hl(0, '@lsp.type.function.c', { fg='#73c0ec' })
-            -- vim.api.nvim_set_hl(0, 'ModeMsg', { fg='#a6c080' })
-        end
-
-        if (vim.g.colors_name == 'vague') then
-            vim.api.nvim_set_hl(0, '@lsp.type.namespace.odin', { fg='#e6788c' })
-        end
-
-        if (vim.g.colors_name == 'vscode') then
-            vim.api.nvim_set_hl(0, 'FlutterWidgetGuides', { fg='#515151' })
-        end
-
-        if (vim.g.colors_name == 'tokyonight-night') then
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp='#db4b4b', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', { sp='#1abc9c', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', { sp='#0db9d7', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', { sp='#e0af68', underline = true })
-        end
-
-        if (vim.g.colors_name == 'tokyonight-moon') then
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp='#c53b53', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', { sp='#4fd6be', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', { sp='#0db9d7', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', { sp='#ffc777', underline = true })
-        end
-
-        if (vim.g.colors_name == 'duskfox') then
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp='#eb6f92', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', { sp='#a3be8c', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', { sp='#569fba', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', { sp='#f6c177', underline = true })
-        end
-
-        --[[
-        bg             = "#222436",
-        bg_dark        = "#1e2030",
-        bg_dark1       = "#191B29",
-        bg_highlight   = "#2f334d",
-        blue           = "#82aaff",
-        blue0          = "#3e68d7",
-        blue1          = "#65bcff",
-        blue2          = "#0db9d7",
-        blue5          = "#89ddff",
-        blue6          = "#b4f9f8",
-        blue7          = "#394b70",
-        comment        = "#636da6",
-        cyan           = "#86e1fc",
-        dark3          = "#545c7e",
-        dark5          = "#737aa2",
-        fg             = "#c8d3f5",
-        fg_dark        = "#828bb8",
-        fg_gutter      = "#3b4261",
-        green          = "#c3e88d",
-        green1         = "#4fd6be",
-        green2         = "#41a6b5",
-        magenta        = "#c099ff",
-        magenta2       = "#ff007c",
-        orange         = "#ff966c",
-        purple         = "#fca7ea",
-        red            = "#ff757f",
-        red1           = "#c53b53",
-        teal           = "#4fd6be",
-        terminal_black = "#444a73",
-        yellow         = "#ffc777",
-        git = {
-            add    = "#b8db87",
-            change = "#7ca1f2",
-            delete = "#e26a75",
-        },
-        --]]
-        if (vim.g.colors_name == 'tokyonight-moon') then
-            -- vim.api.nvim_set_hl(0, '@lsp.type.type', { })
-            -- vim.api.nvim_set_hl(0, '@lsp.type.class', { })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.method.defaultLibrary.go', { fg='#4fd6be' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.function.defaultLibrary.go', { fg='#b4f9f8' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.type.defaultLibrary.go', { fg='#c099ff' })
-            vim.api.nvim_set_hl(0, '@lsp.type.type.go', { fg='#65bcff' })
-            vim.api.nvim_set_hl(0, '@property.go', { fg='#86e1fc' })
-            vim.api.nvim_set_hl(0, '@constant.go', { fg='#fbb7aa' })
-            vim.api.nvim_set_hl(0, 'Constant', { fg='#fbb7aa' })
-            -- vim.api.nvim_set_hl(0, '@variable.parameter', { fg='#ffc777' })
-            vim.api.nvim_set_hl(0, '@variable.parameter', { fg='#b4f9f8' })
-            -- vim.api.nvim_set_hl(0, '@property', { fg='#a0a3ff' })
-            vim.api.nvim_set_hl(0, '@lsp.type.parameter.go', { fg='#ffc777' })
-        end
-
-        if (vim.g.colors_name == 'material' and vim.g.material_style == 'deep ocean') then
-            vim.api.nvim_set_hl(0, '@punctuation', {})
-            vim.api.nvim_set_hl(0, '@punctuation.bracket', {})
-            vim.api.nvim_set_hl(0, '@punctuation.delimiter', {})
-        end
-
-        if (vim.g.colors_name == 'duskfox') then
-            -- vim.api.nvim_set_hl(0, '@property', { fg='#d3ffb9' })
-            -- vim.api.nvim_set_hl(0, 'Function', { fg='#95b2ff' })
-        end
-
-        if (vim.g.colors_name == 'tokyonight-storm') then
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp='#db4b4b', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', { sp='#1abc9c', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', { sp='#0db9d7', underline = true })
-            vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', { sp='#e0af68', underline = true })
-
-            vim.api.nvim_set_hl(0, '@lsp.type.parameter', { fg='#d5cdc3' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration', { fg='#e0af68' })
-            vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.definition', { fg='#e0af68' })
-        end
+      vim.api.nvim_set_hl(0, 'FlutterWidgetGuides', { fg='#4f5c8a' })
     end
+
+    if (vim.g.colors_name == 'tokyonight-moon') then
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.label.dart', { fg='#97d8ff' })
+    end
+
+    --[[
+    if (vim.g.colors_name == 'material' and vim.g.material_style == 'deep ocean') then
+      vim.api.nvim_set_hl(0, '@lsp.type.parameter.java', { fg='#d5cdc3' })
+
+      vim.api.nvim_set_hl(0, '@keyword.modifier.java', { fg='#bb9af7' })
+      vim.api.nvim_set_hl(0, '@keyword.type.java', { fg='#bb9af7' })
+      vim.api.nvim_set_hl(0, '@keyword.import.java', { fg='#bb9af7' })
+      vim.api.nvim_set_hl(0, '@keyword.return.java', { fg='#bb9af7' })
+
+      vim.api.nvim_set_hl(0, '@type.builtin.java', { fg = '#7dcfff' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration.java', { fg='#e0af68' })
+    end
+    --]]
+
+    --[[
+    if (vim.g.colors_name == 'rose-pine') then
+      vim.api.nvim_set_hl(0, '@lsp.type.namespace.go', { fg='#c4a7e7' })
+    end
+    --]]
+
+    --[[
+    if (vim.g.colors_name == 'neomodern') then
+      vim.api.nvim_set_hl(0, '@lsp.type.type.cpp', { fg='#abbceb' })
+      vim.api.nvim_set_hl(0, '@lsp.type.class.cpp', { fg='#a7c080' })
+      vim.api.nvim_set_hl(0, 'ModeMsg', { fg='#a6c080' })
+    end
+    --]]
+
+    if (vim.g.colors_name == 'duskfox') then
+      vim.api.nvim_set_hl(0, '@lsp.type.pol.typst', {})
+      vim.api.nvim_set_hl(0, '@lsp.type.number.typst', { fg='#ea9a97' })
+      vim.api.nvim_set_hl(0, '@constant.typst', { fg='#f6c177' })
+      vim.api.nvim_set_hl(0, '@variable.member.typst', { fg='#eb6f96' })
+      vim.api.nvim_set_hl(0, '@lsp.type.function.typst', { fg='#65b1cd' })
+    end
+
+    if (vim.g.colors_name == 'nordic') then
+      vim.api.nvim_set_hl(0, 'MatchParen', { underline = false, bg = '#465369' })
+    end
+
+    -- vim.api.nvim_set_hl(0, '@lsp.type.parameter', { fg='Purple' })
+    -- vim.api.nvim_set_hl(0, '@lsp.mod.readonly', { italic=true })
+
+    if (vim.g.colors_name == 'campfire') then
+      -- vim.api.nvim_set_hl(0, '@lsp.type.type.cpp', { fg='#abbceb' })
+      -- vim.api.nvim_set_hl(0, '@lsp.type.class.cpp', { fg='#a7c080' })
+      -- vim.api.nvim_set_hl(0, '@lsp.type.type.c', { fg='#abbceb' })
+      -- vim.api.nvim_set_hl(0, '@lsp.type.class.c', { fg='#a7c080' })
+      -- vim.api.nvim_set_hl(0, '@lsp.type.function.c', { fg='#73c0ec' })
+      -- vim.api.nvim_set_hl(0, 'ModeMsg', { fg='#a6c080' })
+    end
+
+    if (vim.g.colors_name == 'vague') then
+      vim.api.nvim_set_hl(0, '@lsp.type.namespace.odin', { fg='#e6788c' })
+    end
+
+    if (vim.g.colors_name == 'vscode') then
+      vim.api.nvim_set_hl(0, 'FlutterWidgetGuides', { fg='#515151' })
+    end
+
+    if (vim.g.colors_name == 'tokyonight-night') then
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp='#db4b4b', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', { sp='#1abc9c', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', { sp='#0db9d7', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', { sp='#e0af68', underline = true })
+    end
+
+    if (vim.g.colors_name == 'tokyonight-moon') then
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp='#c53b53', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', { sp='#4fd6be', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', { sp='#0db9d7', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', { sp='#ffc777', underline = true })
+    end
+
+    if (vim.g.colors_name == 'duskfox') then
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp='#eb6f92', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', { sp='#a3be8c', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', { sp='#569fba', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', { sp='#f6c177', underline = true })
+    end
+
+    --[[
+    bg             = "#222436",
+    bg_dark        = "#1e2030",
+    bg_dark1       = "#191B29",
+    bg_highlight   = "#2f334d",
+    blue           = "#82aaff",
+    blue0          = "#3e68d7",
+    blue1          = "#65bcff",
+    blue2          = "#0db9d7",
+    blue5          = "#89ddff",
+    blue6          = "#b4f9f8",
+    blue7          = "#394b70",
+    comment        = "#636da6",
+    cyan           = "#86e1fc",
+    dark3          = "#545c7e",
+    dark5          = "#737aa2",
+    fg             = "#c8d3f5",
+    fg_dark        = "#828bb8",
+    fg_gutter      = "#3b4261",
+    green          = "#c3e88d",
+    green1         = "#4fd6be",
+    green2         = "#41a6b5",
+    magenta        = "#c099ff",
+    magenta2       = "#ff007c",
+    orange         = "#ff966c",
+    purple         = "#fca7ea",
+    red            = "#ff757f",
+    red1           = "#c53b53",
+    teal           = "#4fd6be",
+    terminal_black = "#444a73",
+    yellow         = "#ffc777",
+    git = {
+      add    = "#b8db87",
+      change = "#7ca1f2",
+      delete = "#e26a75",
+    },
+    --]]
+    if (vim.g.colors_name == 'tokyonight-moon') then
+      -- vim.api.nvim_set_hl(0, '@lsp.type.type', { })
+      -- vim.api.nvim_set_hl(0, '@lsp.type.class', { })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.method.defaultLibrary.go', { fg='#4fd6be' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.function.defaultLibrary.go', { fg='#b4f9f8' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.type.defaultLibrary.go', { fg='#c099ff' })
+      vim.api.nvim_set_hl(0, '@lsp.type.type.go', { fg='#65bcff' })
+      vim.api.nvim_set_hl(0, '@property.go', { fg='#86e1fc' })
+      vim.api.nvim_set_hl(0, '@constant.go', { fg='#fbb7aa' })
+      vim.api.nvim_set_hl(0, 'Constant', { fg='#fbb7aa' })
+      -- vim.api.nvim_set_hl(0, '@variable.parameter', { fg='#ffc777' })
+      vim.api.nvim_set_hl(0, '@variable.parameter', { fg='#b4f9f8' })
+      -- vim.api.nvim_set_hl(0, '@property', { fg='#a0a3ff' })
+      vim.api.nvim_set_hl(0, '@lsp.type.parameter.go', { fg='#ffc777' })
+    end
+
+    if (vim.g.colors_name == 'material' and vim.g.material_style == 'deep ocean') then
+      vim.api.nvim_set_hl(0, '@punctuation', {})
+      vim.api.nvim_set_hl(0, '@punctuation.bracket', {})
+      vim.api.nvim_set_hl(0, '@punctuation.delimiter', {})
+    end
+
+    if (vim.g.colors_name == 'duskfox') then
+      -- vim.api.nvim_set_hl(0, '@property', { fg='#d3ffb9' })
+      -- vim.api.nvim_set_hl(0, 'Function', { fg='#95b2ff' })
+    end
+
+    if (vim.g.colors_name == 'tokyonight-storm') then
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { sp='#db4b4b', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', { sp='#1abc9c', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', { sp='#0db9d7', underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', { sp='#e0af68', underline = true })
+
+      vim.api.nvim_set_hl(0, '@lsp.type.parameter', { fg='#d5cdc3' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.declaration', { fg='#e0af68' })
+      vim.api.nvim_set_hl(0, '@lsp.typemod.parameter.definition', { fg='#e0af68' })
+    end
+  end
 })

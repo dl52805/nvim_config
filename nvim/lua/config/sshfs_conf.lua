@@ -1,2 +1,0 @@
-require("sshfs").setup({
-})
